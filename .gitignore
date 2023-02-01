@@ -1,0 +1,4 @@
+.DS_Store
+inbox/
+outbox/
+settings.json

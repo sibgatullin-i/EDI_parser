@@ -1,0 +1,21 @@
+﻿html {
+  font-size: 12px;
+  font-family: Tahoma, Verdana, sans-serif;
+  text-align: left;
+}
+
+table {
+  border-width: 1px;
+  border-style: solid;
+  border-color: black;
+  border-collapse: collapse;
+}
+
+th { background-color: #c0c0c0; }
+
+td,th {
+  border-width: 1px;
+  padding: 3px;
+  border-style: solid;
+  border-color: black;
+}

@@ -1,0 +1,17 @@
+{
+  "inboxFolder":  "c:\\folder",
+  "outboxFolder":  "c:\\folder",
+  "cssFile":  "c:\\folder\\style.css",
+  "sftpServer":  "127.0.0.1",
+  "sftpPort":  22,
+  "sftpUsername":  "user",
+  "sftpPassword":  "...password...",
+  "sftpParentFolder":  "/sftp/folder/",
+  "mailServer":  "outlook.office365.com",
+  "mailPort":  "995",
+  "mailUsername":  "i...@outlook.com",
+  "mailPassword":  "...password...",
+  "mailTargetFrom":  "noreply@sample.com",
+  "chatId": "123456789",
+  "tgToken": "thisisthemostsecuretokenever"
+}
