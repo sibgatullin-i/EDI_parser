@@ -23,7 +23,6 @@ $mails = Check-Mail $pop3Client -From $settings.mailTargetfrom
 # if none - exit
 $targetMails = ($mails | Where-Object {$_.target -eq $true}).count
 if ( $targetMails -eq 0 ) { write-host "No matching emails found. Goodbye!" ; write-host "Will exit in 10 seconds..." ; start-sleep 10; exit 0 }
-$msg += "`r`nnew messages: $($targetMails.toString())"
 
 # remove everything from folders
 Get-ChildItem $settings.inboxFolder | Remove-Item -Force -Recurse
