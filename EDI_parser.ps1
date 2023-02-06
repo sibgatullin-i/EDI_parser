@@ -20,9 +20,20 @@ if (!$pop3Client) {
 # now we check to see if there is any mail for us
 $mails = Check-Mail $pop3Client -From $settings.mailTargetfrom
 
-# if none - exit
+# if none - exit, if >= 1 - ask to confirm
 $targetMails = ($mails | Where-Object {$_.target -eq $true}).count
-if ( $targetMails -eq 0 ) { write-host "No matching emails found. Goodbye!" ; write-host "Will exit in 10 seconds..." ; start-sleep 10; exit 0 }
+if ( $targetMails -eq 0 ) {
+  write-host "No matching emails found. Goodbye!`r`nWill exit in 10 seconds..." 
+  start-sleep 10
+  exit 0 
+} elseif ( $targetMails -gt 1) {
+  write-warning "There are several mails found.`r`nCheck mailbox and delete duplicates."
+  if (!((read-host "type YES to continue:") -like "yes")) {
+    write-host "Goodbye!`r`nWill exit in 10 seconds..."
+    start-sleep 10;
+    exit 1;
+  }
+}
 
 # remove everything from folders
 Get-ChildItem $settings.inboxFolder | Remove-Item -Force -Recurse
