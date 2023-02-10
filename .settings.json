@@ -11,7 +11,7 @@
   "mailPort":  "995",
   "mailUsername":  "i...@outlook.com",
   "mailPassword":  "...password...",
-  "mailTargetFrom":  "noreply@sample.com",
+  "mailTargetFrom":  ["noreply@sample.com", "noreply2@sample.com"],
   "chatId": "123456789",
   "tgToken": "thisisthemostsecuretokenever"
 }

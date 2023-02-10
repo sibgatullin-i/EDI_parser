@@ -19,14 +19,14 @@ function Connect-Mail {
 function Check-Mail {
   param(
     [Parameter(Mandatory)][OpenPop.Pop3.Pop3Client]$pop3Client,
-    [Parameter(Mandatory)][string]$From
+    [Parameter(Mandatory)]$From
   )
   $messageCount = $pop3Client.getMessageCount()
   $targetMessages = @()
   for ($currentIndex = $messageCount; $currentIndex -gt 0; $currentIndex--){
     $messageFrom = $pop3Client.getMessage($currentIndex).Headers.From.Address
     $messageAttachment = $pop3Client.GetMessage($currentIndex).FindAllAttachments().count
-    if ($messageFrom -like $From -and $messageAttachment -gt 0) {
+    if ($From.Contains($messageFrom) -and $messageAttachment -gt 0) {
       $targetMessages += [pscustomobject]@{index = $currentIndex; target = $true}
     } else {
       $targetMessages += [pscustomobject]@{index = $currentIndex; target = $false}
