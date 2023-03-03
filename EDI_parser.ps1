@@ -24,13 +24,14 @@ $mails = Check-Mail $pop3Client -From $settings.mailTargetfrom
 $targetMails = ($mails | Where-Object {$_.target -eq $true}).count
 if ( $targetMails -eq 0 ) {
   write-host "No matching emails found. Please choose:" 
-  $response = read-host "type YES to parse existing inbox files:"
+  $response = read-host "type YES to parse existing inbox files"
   if ($response -like "yes") {
     # parse existing inbox files, remove all outbox files
     Get-ChildItem $settings.outboxFolder | Remove-Item -Force -Recurse
   } else {
     # exit
     write-host "See ya!`r`nWill exit in 10 seconds..."
+    $pop3Client.dispose()
     start-sleep 10
     exit
   }
@@ -42,12 +43,13 @@ if ( $targetMails -eq 0 ) {
   Get-ChildItem $settings.outboxFolder | Remove-Item -Force -Recurse
 } elseif ($targetMails -gt 1) {
   write-warning "There are several mails found.`r`nCheck mailbox and delete (if any) duplicates."
-  $response = read-host "type YES to continue:"
+  $response = read-host "type YES to continue"
   if ($response -like "yes") {
     Get-ChildItem $settings.inboxFolder | Remove-Item -Force -Recurse
     Get-ChildItem $settings.outboxFolder | Remove-Item -Force -Recurse
   } else {
     write-host "See ya!`r`nWill exit in 10 seconds..."
+    $pop3Client.dispose()
     start-sleep 10
     exit
   }
