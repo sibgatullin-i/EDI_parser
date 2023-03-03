@@ -23,21 +23,35 @@ $mails = Check-Mail $pop3Client -From $settings.mailTargetfrom
 # if none - exit, if >= 1 - ask to confirm
 $targetMails = ($mails | Where-Object {$_.target -eq $true}).count
 if ( $targetMails -eq 0 ) {
-  write-host "No matching emails found. Goodbye!`r`nWill exit in 10 seconds..." 
+  write-host "No matching emails found. Please choose:" 
+  $response = read-host "type YES to parse existing inbox files:"
+  if ($response -like "yes") {
+    # parse existing inbox files, remove all outbox files
+    Get-ChildItem $settings.outboxFolder | Remove-Item -Force -Recurse
+  } else {
+    # exit
+    write-host "See ya!`r`nWill exit in 10 seconds..."
+    start-sleep 10
+    exit
+  }
+} elseif ($targetMails -eq 1) {
+  write-host "Found one mail. Going to delete old inbox files and proceed new ones."
+  write-warning "Ctrl-C to abort"
   start-sleep 10
-  exit 0 
-} elseif ( $targetMails -gt 1) {
-  write-warning "There are several mails found.`r`nCheck mailbox and delete duplicates."
-  if (!((read-host "type YES to continue:") -like "yes")) {
-    write-host "Goodbye!`r`nWill exit in 10 seconds..."
-    start-sleep 10;
-    exit 1;
+  Get-ChildItem $settings.inboxFolder | Remove-Item -Force -Recurse
+  Get-ChildItem $settings.outboxFolder | Remove-Item -Force -Recurse
+} elseif ($targetMails -gt 1) {
+  write-warning "There are several mails found.`r`nCheck mailbox and delete (if any) duplicates."
+  $response = read-host "type YES to continue:"
+  if ($response -like "yes") {
+    Get-ChildItem $settings.inboxFolder | Remove-Item -Force -Recurse
+    Get-ChildItem $settings.outboxFolder | Remove-Item -Force -Recurse
+  } else {
+    write-host "See ya!`r`nWill exit in 10 seconds..."
+    start-sleep 10
+    exit
   }
 }
-
-# remove everything from folders
-Get-ChildItem $settings.inboxFolder | Remove-Item -Force -Recurse
-Get-ChildItem $settings.outboxFolder | Remove-Item -Force -Recurse
 
 # proceed mails, if $_.target -eq $true - download and mark for deletion, else mark for deletion
 foreach ($mail in $mails) { 
