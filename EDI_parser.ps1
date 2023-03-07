@@ -53,6 +53,11 @@ if ( $targetMails -eq 0 ) {
     start-sleep 10
     exit
   }
+} else { # seems like connection error or something
+  Write-warning "Cannot count mails. Check network connection"
+  write-host "See ya!`r`nWill exit in 10 seconds..."
+  $pop3Client.dispose()
+  start-sleep 10
 }
 
 # proceed mails, if $_.target -eq $true - download and mark for deletion, else mark for deletion
