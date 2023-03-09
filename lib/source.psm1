@@ -102,7 +102,7 @@ function Download-Pages {
   )
   foreach ($item in $sourceData) {
     $page = ''
-    $newName = $Prefix + '-' + $HTMLdate + (get-date -Format '_hhMMssffff') + '.html'
+    $newName = $Prefix + '-' + $HTMLdate + (get-date -Format '_hhmmssffff') + '.html'
     $newPath = Join-Path -Path $Folder -ChildPath $newName
     write-host "Downloading $newName..."
     try { $page = (Invoke-WebRequest -UseBasicParsing $item.Url).Content }
