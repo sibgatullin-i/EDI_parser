@@ -33,7 +33,7 @@ function Check-Mail {
     }
   }
   write-host "$messageCount total messages"
-  write-host "$(($targetMessages | where-Object {$_.target -eq $true}).count ) from $From with attachments"
+  write-host "$(($targetMessages | where-Object {$_.target -eq $true} | measure-object).count ) from $From with attachments"
   return $targetMessages
 }
 
