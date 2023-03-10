@@ -21,7 +21,7 @@ if (!$pop3Client) {
 $mails = Check-Mail $pop3Client -From $settings.mailTargetfrom
 
 # if none - exit, if >= 1 - ask to confirm
-$targetMails = ($mails | Where-Object {$_.target -eq $true}).count
+$targetMails = ($mails | Where-Object {$_.target -eq $true} | measure-object).count
 if ( $targetMails -eq 0 ) {
   write-host "No matching emails found. Please choose:" 
   $response = read-host "type YES to parse existing inbox files"
