@@ -58,6 +58,7 @@ if ( $targetMails -eq 0 ) {
   write-host "See ya!`r`nWill exit in 10 seconds..."
   $pop3Client.dispose()
   start-sleep 10
+  exit
 }
 
 # proceed mails, if $_.target -eq $true - download and mark for deletion, else mark for deletion
