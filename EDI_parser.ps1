@@ -31,7 +31,7 @@ if ( $targetMails -eq 0 ) {
   } else {
     # exit
     write-host "See ya!`r`nWill exit in 10 seconds..."
-    $pop3Client.dispose()
+    $pop3Client.disconnect()
     start-sleep 10
     exit
   }
@@ -49,14 +49,14 @@ if ( $targetMails -eq 0 ) {
     Get-ChildItem $settings.outboxFolder | Remove-Item -Force -Recurse
   } else {
     write-host "See ya!`r`nWill exit in 10 seconds..."
-    $pop3Client.dispose()
+    $pop3Client.disconnect()
     start-sleep 10
     exit
   }
 } else { # seems like connection error or something
   Write-warning "Cannot count mails. Check network connection"
   write-host "See ya!`r`nWill exit in 10 seconds..."
-  $pop3Client.dispose()
+  $pop3Client.disconnect()
   start-sleep 10
   exit
 }
@@ -71,7 +71,7 @@ foreach ($mail in $mails) {
   }
 }
 # done with mailbox
-$pop3Client.dispose()
+$pop3Client.disconnect()
 
 $incomingFiles = (Get-ChildItem $settings.inboxFolder)
 $msg += "`r`nfiles saved: $((Get-ChildItem $settings.inboxFolder).count)"
