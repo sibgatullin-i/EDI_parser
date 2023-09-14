@@ -109,7 +109,7 @@ function Download-Pages {
     $newPath = Join-Path -Path $Folder -ChildPath $newName
     $currentItemPosition += 1
     $currentProgress = [Math]::Round(($currentItemPosition * 100) / $sourceData.Count)
-    Write-Progress -ParentId $ProgressParentId -Id 101 -Activity "Downloading $currentItemPosition / $($sourceData.Count)" -CurrentOperation "$newName..." -PercentComplete $currentProgress
+    Write-Progress -ParentId $ProgressParentId -Id 101 -Activity "Downloading $currentItemPosition / $($sourceData.Count)" -Status "$newName..." -PercentComplete $currentProgress
     write-host "Downloading $newName..."
     try { $page = (Invoke-WebRequest -UseBasicParsing $item.Url).Content }
     catch { write-warning "$newName download failed" }
