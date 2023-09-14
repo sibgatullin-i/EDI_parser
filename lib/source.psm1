@@ -101,11 +101,14 @@ function Download-Pages {
     [Parameter(Mandatory)][string]$HTMLheader,
     [int]$ProgressParentId = -1
   )
+  
+  $currentItemPostion = 0
   foreach ($item in $sourceData) {
     $page = ''
     $newName = $Prefix + '-' + $HTMLdate + (get-date -Format '_hhmmssffff') + '.html'
     $newPath = Join-Path -Path $Folder -ChildPath $newName
-    $currentProgress = [Math]::Round((++$currentItemPostion * 100) / $sourceData.Count)
+    $currentItemPostion += 1
+    $currentProgress = [Math]::Round(($currentItemPostion * 100) / $sourceData.Count)
     Write-Progress -ParentId $ProgressParentId -Id 101 -Activity "Downloading" -Status "$currentItemPosition / $($sourceData.Count)" -CurrentOperation "$newName..." -PercentComplete $currentProgress
     write-host "Downloading $newName..."
     try { $page = (Invoke-WebRequest -UseBasicParsing $item.Url).Content }
