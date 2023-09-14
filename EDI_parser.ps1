@@ -95,8 +95,8 @@ $AllProtocols = [System.Net.SecurityProtocolType]'Ssl3,Tls,Tls11,Tls12'
 
 # proceed files - move, parse, download and shit
 foreach ($incomingFile in $incomingFiles) {
-  $currentIncomingFilePosition += 1
-  Write-Progress -Id 1 -Activity "$currentIncomingFilePosition / $($incomingFiles.Count)" -Status "Processing $($incomingFile.Name)..." -PercentComplete (($currentItemPostion * 100) / $sourceData.Count)
+  $currentProgress = [Math]::Round((++$currentItemPostion * 100) / $incomingFiles.Count)
+  Write-Progress -Id 1 -Activity "$currentItemPostion / $($incomingFiles.Count)" -Status "Processing $($incomingFile.Name)..." -PercentComplete $currentProgress
   $incomingFileBaseName = ($incomingFile.BaseName -split "-_-")[1]
   #$incomingFileTimeStamp = ($incomingFile.BaseName -split "-_-")[0]
   $source = (Parse-HTML $incomingFile.FullName)
