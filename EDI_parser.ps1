@@ -95,6 +95,8 @@ $AllProtocols = [System.Net.SecurityProtocolType]'Ssl3,Tls,Tls11,Tls12'
 
 # proceed files - move, parse, download and shit
 foreach ($incomingFile in $incomingFiles) {
+  $currentIncomingFilePosition += 1
+  Write-Progress -Id 1 -Activity "$currentIncomingFilePosition / $($incomingFiles.Count)" -Status "Processing $($incomingFile.Name)..." -PercentComplete "$(($currentItemPostion * 100) / $sourceData.Count)"
   $incomingFileBaseName = ($incomingFile.BaseName -split "-_-")[1]
   #$incomingFileTimeStamp = ($incomingFile.BaseName -split "-_-")[0]
   $source = (Parse-HTML $incomingFile.FullName)
@@ -103,7 +105,7 @@ foreach ($incomingFile in $incomingFiles) {
   $sourceData = $source[2]
   $folder = ( (Join-Path -Path $settings.outboxFolder -ChildPath "$incomingFileBasename-$HTMLdate")  )
   mkdir $folder
-  Download-Pages -sourceData $sourceData -Folder $folder -Prefix $incomingFileBaseName -HTMLdate $HTMLdate -HTMLheader $HTMLheader
+  Download-Pages -sourceData $sourceData -Folder $folder -Prefix $incomingFileBaseName -HTMLdate $HTMLdate -HTMLheader $HTMLheader -ProgressParentId 1
   Copy-Item $settings.cssFile $folder
 } 
 
