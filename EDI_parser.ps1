@@ -2,8 +2,8 @@
 $settings = (get-content (Join-Path -Path $PSScriptRoot -ChildPath "settings.json") | ConvertFrom-json)
 
 add-type -path ((join-path -path (join-path -Path $PSScriptRoot -ChildPath "lib") -ChildPath "OpenPop.dll"))
-Import-Module Transferetto -Force
-Import-Module ((join-path -path (join-path -Path $PSScriptRoot -ChildPath "lib") -ChildPath "source.psm1"))
+Import-Module Transferetto -Force -DisablenameChecking
+Import-Module ((join-path -path (join-path -Path $PSScriptRoot -ChildPath "lib") -ChildPath "source.psm1")) -DisablenameChecking
 
 $msg = "EDI parser status" # will collect error messages here
 
