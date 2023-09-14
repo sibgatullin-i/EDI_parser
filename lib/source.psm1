@@ -98,12 +98,15 @@ function Download-Pages {
     [Parameter(Mandatory)][string]$Folder,
     [Parameter(Mandatory)][string]$Prefix,
     [Parameter(Mandatory)][string]$HTMLdate,
-    [Parameter(Mandatory)][string]$HTMLheader
+    [Parameter(Mandatory)][string]$HTMLheader,
+    [int]$ProgressParentId = -1
   )
   foreach ($item in $sourceData) {
+    $currentItemPosition += 1
     $page = ''
     $newName = $Prefix + '-' + $HTMLdate + (get-date -Format '_hhmmssffff') + '.html'
     $newPath = Join-Path -Path $Folder -ChildPath $newName
+    Write-Progress -ParentId $ProgressParentId -Activity "$currentItemPosition / $($sourceData.Count)" -Status "Downloading $newName..." -PercentComplete "$(($currentItemPostion * 100) / $sourceData.Count)"
     write-host "Downloading $newName..."
     try { $page = (Invoke-WebRequest -UseBasicParsing $item.Url).Content }
     catch { write-warning "$newName download failed" }
