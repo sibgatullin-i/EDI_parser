@@ -98,7 +98,7 @@ $currentFilePosition = 0
 foreach ($incomingFile in $incomingFiles) {
   $currentFilePosition += 1
   $currentProgress = [Math]::Round(($currentFilePosition * 100) / $incomingFiles.Count)
-  Write-Progress -Id 1 -Activity "Processing incoming files" -CurrentOperation "$currentFilePosition / $($incomingFiles.Count): $($incomingFile.Name)..." -PercentComplete $currentProgress
+  Write-Progress -Id 1 -Activity "Processing incoming files" -Status "$currentFilePosition / $($incomingFiles.Count): $($incomingFile.Name)..." -PercentComplete $currentProgress
   $incomingFileBaseName = ($incomingFile.BaseName -split "-_-")[1]
   #$incomingFileTimeStamp = ($incomingFile.BaseName -split "-_-")[0]
   $source = (Parse-HTML $incomingFile.FullName)
