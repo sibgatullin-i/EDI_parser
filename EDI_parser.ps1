@@ -115,10 +115,20 @@ foreach ($incomingFile in $incomingFiles) {
 $sftpClient = Connect-SFTP -Server $settings.sftpServer -Port $settings.sftpPort -Verbose -Username $settings.sftpUsername -Password $settings.sftpPassword
 
 # Create folders and upload files
-foreach ($folder in (Get-ChildItem $settings.outboxFolder)) {
+$currentFolderPosition = 0
+$folders = (Get-ChildItem $settings.outboxFolder)
+foreach ($folder in $folders) {
+  $currentFolderPosition += 1
+  $currentProgress = [Math]::Round(($currentFolderPosition * 100) / $folders.Count)
+  Write-Progress -Id 2 -Activity "Uploading folders" -Status "$currentFolderPosition / $($folders.Count): $($folder.Name)..." -PercentComplete $currentProgress
   $sftpFolder = $settings.sftpParentFolder + $folder.BaseName
   $sftpClient.CreateDirectory("$sftpFolder")
-  foreach ($file in (Get-ChildItem $folder.FullName)){
+  $currentFilePosition = 0
+  $files = (Get-ChildItem $folder.FullName)
+  foreach ($file in $files){
+    $currentFilePosition += 1
+    $currentProgress = [Math]::Round(($currentFilePosition * 100) / $files.Count)
+    Write-Progress -Id 201 -Activity "Uploading files" -Status "$currentFilePosition / $($files.Count): $($file.Name)..." -PercentComplete $currentProgress -ParentId 2
     write-host "Uploading file $($file.Name)..."
     $result = Send-SFTPFile -SftpClient $sftpClient -LocalPath $file.FullName -RemotePath "$sftpFolder/$($file.name)" -AllowOverride
     if (!$result.Status) { write-warning "failed"}
