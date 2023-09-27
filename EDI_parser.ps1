@@ -105,10 +105,12 @@ foreach ($incomingFile in $incomingFiles) {
   $HTMLheader = $source[0]
   $HTMLdate = $source[1]
   $sourceData = $source[2]
-  $folder = ( (Join-Path -Path $settings.outboxFolder -ChildPath "$incomingFileBasename-$HTMLdate")  )
-  mkdir $folder
-  Download-Pages -sourceData $sourceData -Folder $folder -Prefix $incomingFileBaseName -HTMLdate $HTMLdate -HTMLheader $HTMLheader -ProgressParentId 1
-  Copy-Item $settings.cssFile $folder
+  if ($HTMLheader -and $HTMLdate -and $sourceData) {
+    $folder = ( (Join-Path -Path $settings.outboxFolder -ChildPath "$incomingFileBasename-$HTMLdate")  )
+    mkdir $folder
+    Download-Pages -sourceData $sourceData -Folder $folder -Prefix $incomingFileBaseName -HTMLdate $HTMLdate -HTMLheader $HTMLheader -ProgressParentId 1
+    Copy-Item $settings.cssFile $folder
+  }
 } 
 
 # connect to SFTP
